@@ -54,7 +54,7 @@ namespace TiendaOnline.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Country country)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Country country)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace TiendaOnline.Web.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Existe un registro con el mismo nombre.");
+                        ModelState.AddModelError(string.Empty, "hay un registro con el mismo nombre.");
                     }
                     else
                     {
@@ -84,8 +84,9 @@ namespace TiendaOnline.Web.Controllers
             return View(country);
         }
 
-
-        // GET: Countries/Edit/5
+        // POST: Countries/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Country country)
@@ -107,7 +108,7 @@ namespace TiendaOnline.Web.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Existe un registro con el mismo nombre.");
+                        ModelState.AddModelError(string.Empty, "hay un registro con el mismo nombre.");
                     }
                     else
                     {
@@ -122,42 +123,6 @@ namespace TiendaOnline.Web.Controllers
             }
             return View(country);
         }
-
-        // POST: Countries/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Country country)
-        {
-            if (id != country.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(country);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CountryExists(country.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(country);
-        }
-
         // GET: Countries/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -175,6 +140,8 @@ namespace TiendaOnline.Web.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
 
 
         private bool CountryExists(int id)
