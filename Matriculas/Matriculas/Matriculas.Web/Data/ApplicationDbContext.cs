@@ -10,9 +10,16 @@ namespace Matriculas.Web.Data
         {
         }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); modelBuilder.Entity<Course>().HasIndex(t => t.CourseCode).IsUnique();
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Course>().HasIndex(t => t.CourseCode).IsUnique();
+
+            modelBuilder.Entity<Teacher>().HasIndex(t => t.TeacherIdentification).IsUnique();
+
+
         }
     }
 
