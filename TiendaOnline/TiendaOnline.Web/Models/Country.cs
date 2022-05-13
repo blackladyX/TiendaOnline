@@ -2,19 +2,18 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace TiendaOnline.Web.Models
+namespace TiendaOnline.web.Models
 {
     public class Country
     {
         public int Id { get; set; }
-        
+        [MaxLength(100, ErrorMessage = "El campo {0} debe contener al menos un caracter")]
         [Required]
-        [MaxLength(50, ErrorMessage = "El campo {0} debe contener al menos un caracter")]
+
         public string Name { get; set; }
 
         public ICollection<Department> Departments { get; set; }
         [DisplayName("Departments Number")]
         public int DepartmentsNumber => Departments == null ? 0 : Departments.Count;
-
     }
 }

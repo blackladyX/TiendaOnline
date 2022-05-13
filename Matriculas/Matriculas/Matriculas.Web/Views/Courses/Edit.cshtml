@@ -1,0 +1,71 @@
+﻿@model Matriculas.Web.Models.Course
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Course</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CourseId" />
+            <div class="form-group">
+                <label asp-for="CourseCode" class="control-label"></label>
+                <input asp-for="CourseCode" class="form-control" />
+                <span asp-validation-for="CourseCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseName" class="control-label"></label>
+                <input asp-for="CourseName" class="form-control" />
+                <span asp-validation-for="CourseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InicialDate" class="control-label"></label>
+                <input asp-for="InicialDate" class="form-control" />
+                <span asp-validation-for="InicialDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FinalDate" class="control-label"></label>
+                <input asp-for="FinalDate" class="form-control" />
+                <span asp-validation-for="FinalDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseCost" class="control-label"></label>
+                <input asp-for="CourseCost" class="form-control" />
+                <span asp-validation-for="CourseCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateInscripcion" class="control-label"></label>
+                <input asp-for="DateInscripcion" class="form-control" />
+                <span asp-validation-for="DateInscripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Capacity" class="control-label"></label>
+                <input asp-for="Capacity" class="form-control" />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Intensity" class="control-label"></label>
+                <input asp-for="Intensity" class="form-control" />
+                <span asp-validation-for="Intensity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassSchedule" class="control-label"></label>
+                <input asp-for="ClassSchedule" class="form-control" />
+                <span asp-validation-for="ClassSchedule" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" /><i class="fas fa-pencil-alt"></i>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-success"> <i class="fas fa-home" > </i> Back to List </a>  
+</div>
+

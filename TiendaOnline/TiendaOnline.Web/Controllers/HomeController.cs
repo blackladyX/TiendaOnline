@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using TiendaOnline.Web.Models;
+using TiendaOnline.web.Models;
 
-namespace TiendaOnline.Web.Controllers
+namespace TiendaOnline.web.Controllers
 {
     public class HomeController : Controller
     {
