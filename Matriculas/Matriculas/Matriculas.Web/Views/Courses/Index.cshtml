@@ -43,9 +43,13 @@
                 @Html.DisplayNameFor(model => model.ClassSchedule)
             </th>
             <th>
+               @Html.DisplayNameFor(model => model.TeachersIdentification)
+            </th>
+            <th>
                 Opcion     
             </th>
-            <th>      </th>
+
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -78,6 +82,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ClassSchedule)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeachersIdentification)
+            </td>
+
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CourseId" ><i class="fas fa-pencil-alt"></i></a> |
                <a asp-action="Details" asp-route-id="@item.CourseId" ><i class="fas fa-align-justify"></i></a> |

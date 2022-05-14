@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Matriculas.Web.Models
 {
@@ -13,5 +15,9 @@ namespace Matriculas.Web.Models
         public string TeacherAddress { get; set; }
         public string TeacherCellPhone { get; set; }
         public string ArtisticArea { get; set; }
+        [JsonIgnore] //lo ignora en la respuesta json
+        [NotMapped] //no se crea en la base de datos
+        public int IdCourse { get; set; }
+
     }
 }

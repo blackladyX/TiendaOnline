@@ -20,7 +20,7 @@ namespace Matriculas.Web.Controllers
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Courses.ToListAsync());
+            return View(await _context.Courses.Include(c => c.Teachers).ToListAsync());
         }
 
         // GET: Courses/Details/5
@@ -32,6 +32,7 @@ namespace Matriculas.Web.Controllers
             }
 
             var course = await _context.Courses
+                .Include(c => c.Teachers)
                 .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
@@ -66,7 +67,7 @@ namespace Matriculas.Web.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("Duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Existe un registro con el mismo nombre.");
+                        ModelState.AddModelError(string.Empty, "There are a record with the same name.");
                     }
                     else
                     {
@@ -107,32 +108,41 @@ namespace Matriculas.Web.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
-                try 
-                { _context.Update(course);
+                try
+                {
+                    _context.Update(course);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
-                } 
-                catch (DbUpdateException dbUpdateException) 
+                }
+                catch (DbUpdateException dbUpdateException)
                 {
-                    if (dbUpdateException.InnerException.Message.Contains("Duplicate")) 
+                    if (dbUpdateException.InnerException.Message.Contains("Duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Existe un registro con el mismo nombre.");
-                    } else { 
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message); 
+                        ModelState.AddModelError(string.Empty, "There are a record with the same name.");
                     }
-                } catch (Exception exception) {
-                    ModelState.AddModelError(string.Empty, exception.Message); 
-                } 
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
             }
             return View(course);
         }
         // GET: Courses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null) { return NotFound(); }
-            Course course = await _context.Courses.FirstOrDefaultAsync(m => m.CourseId == id);
+            if (id == null) 
+            {
+                return NotFound();
+            }
+            Course course = await _context.Courses.Include(c => c.Teachers).FirstOrDefaultAsync(m => m.CourseId == id);
+
             if (course == null)
             { return NotFound(); }
             _context.Courses.Remove(course); await _context.SaveChangesAsync();
@@ -158,9 +168,118 @@ namespace Matriculas.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CourseExists(int id)
+        // AGREGAMOS DEPARTAMENTO
+
+        public async Task<IActionResult> AddDepartment(int? id)
         {
-            return _context.Courses.Any(e => e.CourseId == id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Course country = await _context.Courses.FindAsync(id);
+            if (country == null)
+            {
+                return NotFound();
+            }
+            Teacher model = new Teacher { IdCourse = country.CourseId };
+            return View(model);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddDepartment(Teacher teacher)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Course course = await _context.Courses.Include(c => c.Teachers).FirstOrDefaultAsync(c => c.CourseId == teacher.IdCourse);
+                if (course == null) { return NotFound(); }
+                try
+                {
+                    teacher.TeacherId = 0;
+                    course.Teachers.Add(teacher); _context.Update(course);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details), new { Id = course.CourseId });
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("Duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception) { ModelState.AddModelError(string.Empty, exception.Message); }
+            }
+            return View(teacher);
+        }
+
+
+        /// Edit teacher
+        /// 
+        public async Task<IActionResult> EditTeacher(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Teacher teacher = await _context.Teachers.FindAsync(id);
+            if (teacher == null)
+            {
+                return NotFound();
+            }
+            Course course = await _context.Courses.FirstOrDefaultAsync(c => c.Teachers.FirstOrDefault(d => d.IdCourse == teacher.TeacherId) != null);
+            teacher.IdCourse = course.CourseId;
+            return View(teacher);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditDepartment(Teacher teacher)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(teacher); await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details), new { Id = teacher.IdCourse });
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("Duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+            return View(teacher);
+        }
+        // Delete teacher
+        public async Task<IActionResult> DeleteTeacher(int? id)
+        {
+
+           
+            if (id == null) 
+            {
+                return NotFound(); 
+            }
+            Teacher teacher = await _context.Teachers.FirstOrDefaultAsync(m => m.TeacherId == id);
+            if (teacher == null) { return NotFound(); }
+            Course course = await _context.Courses.FirstOrDefaultAsync(c => c.Teachers.FirstOrDefault(d => d.TeacherId == teacher.TeacherId) != null);
+            _context.Teachers.Remove(teacher); await _context.SaveChangesAsync(); 
+            return RedirectToAction(nameof(Details), new { Id = course.CourseId });
+        }
+
+
     }
 }

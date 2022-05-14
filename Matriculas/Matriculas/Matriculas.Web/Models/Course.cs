@@ -19,7 +19,8 @@ namespace Matriculas.Web.Models
         public int Intensity { get; set; }
         public string ClassSchedule { get; set; }
         public ICollection<Teacher> Teachers { get; set; }
-        [DisplayName("Teachers Identification")] public int TeachersIdentification => Teachers == null ? 0 : Teachers.Count;
+        [DisplayName("Teachers Id")] 
+        public int TeachersId => Teachers == null ? 0 : Teachers.Count;
 
 
     }
