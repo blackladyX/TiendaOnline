@@ -7,10 +7,10 @@
 <h2>Details</h2>
 <div> <h4>Teacher</h4>
 <br /> <hr /> <dl class="dl-horizontal">
-28
-<dt> @Html.DisplayNameFor(model => model.TeacherIdentification) </dt>
+
+<dt> @Html.DisplayNameFor(model => model.TeacherId) </dt>
 <dd>
-    @Html.DisplayFor(model => model.TeacherIdentification) </dd>
+    @Html.DisplayFor(model => model.TeacherId) </dd>
 
     </dl> 
     </div>
@@ -18,6 +18,11 @@
 
 
 <partial name="_DeleteDialog" />
-@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> <script src="/js/deleteDialog.js"></script>
+@section Scripts 
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> 
+<script src="/js/deleteDialog.js"></script>
 <script type="text/javascript"> $(document).ready(function () { $('#MyTable').DataTable();
 // Delete item sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Countries/DeleteCity/', false); }); </script> }

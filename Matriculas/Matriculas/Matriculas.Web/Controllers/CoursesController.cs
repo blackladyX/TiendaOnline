@@ -168,25 +168,25 @@ namespace Matriculas.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // AGREGAMOS DEPARTAMENTO
+        // AGREGAMOS teacher
 
-        public async Task<IActionResult> AddDepartment(int? id)
+        public async Task<IActionResult> AddTeacher(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            Course country = await _context.Courses.FindAsync(id);
-            if (country == null)
+            Course course = await _context.Courses.FindAsync(id);
+            if (course == null)
             {
                 return NotFound();
             }
-            Teacher model = new Teacher { IdCourse = country.CourseId };
+            Teacher model = new Teacher { IdCourse = course.CourseId };
             return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDepartment(Teacher teacher)
+        public async Task<IActionResult> AddTeacher(Teacher teacher)
         {
 
             if (ModelState.IsValid)

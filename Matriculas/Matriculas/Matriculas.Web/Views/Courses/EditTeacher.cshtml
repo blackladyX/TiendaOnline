@@ -1,5 +1,7 @@
 ﻿@model Matriculas.Web.Models.Teacher
-@{ ViewData["Title"] = "Edit"; }
+@{
+    ViewData["Title"] = "Edit";
+ }
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
 <link rel="stylesheet" href="~/lib/Font-Awesome/css/regular.min.css">
@@ -10,7 +12,7 @@
     <form asp-action="EditTeacher">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div> 
         <input type="hidden" asp-for="TeacherId" /> <input type="hidden" asp-for="IdCourse" />
-<partial name="_Department" />
+<partial name="_Teacher" />
 <div class="form-group"> 
     <input type="submit" value="Save" class="btn btn-primary" /> 
     <a asp-action="Details" asp-route-id="@Model.IdCourse" class="btn btn-success">Back to List</a> 
@@ -18,6 +20,8 @@
 </form>
 </div> 
 </div>
-@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+@section Scripts
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
 }
